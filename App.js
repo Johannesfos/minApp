@@ -25,8 +25,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    var element = (function(pagenr) {
-      switch (pagenr) {
+    const content = (function(tab) {
+      switch (tab) {
         case 0:
           return <Homepage />;
         case 1:
@@ -42,7 +42,7 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.pagecontainer}>{element}</View>
+        <View style={styles.pagecontainer}>{content}</View>
         <NavBar OnTabChange={this._OnTabChange.bind(this)} />
       </View>
     );

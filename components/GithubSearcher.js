@@ -74,14 +74,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     backgroundColor: "white",
-    marginTop: 20,
-    width: 250
+    width: 250,
+    marginTop: 40,
+    marginBottom: 30,
+    left: Dimensions.get("window").width / 2 - 125,
+    textAlign: "center"
   },
   loading: {
     position: "absolute",
     top: Dimensions.get("window").height / 2 - 50,
-    left: Dimensions.get("window").width / 2 - 10,
-    justifyContent: "center",
-    alignItems: "center"
+    left: Dimensions.get("window").width / 2 - 10
   }
 });

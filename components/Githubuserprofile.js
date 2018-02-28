@@ -7,7 +7,8 @@ import {
   TouchableHighlight,
   TextInput,
   ActivityIndicator,
-  Image
+  Image,
+  Dimensions
 } from "react-native";
 
 export default class GithubUserProfile extends React.Component {
@@ -32,15 +33,18 @@ export default class GithubUserProfile extends React.Component {
         </View>
       );
     } else {
-      console.log(avatar_url);
       return (
         <View>
-          <Text>{name}</Text>
           <Image source={{ uri: avatar_url }} style={styles.image} />
-          <Text>Location: {location}</Text>
-          <Text>Followers: {followers}</Text>
-          <Text>Bio: {bio}</Text>
-          <Text>Company: {company}</Text>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.header}>Location:</Text>
+          <Text style={{ textAlign: "center" }}>{location}</Text>
+          <Text style={styles.header}>Followers:</Text>
+          <Text style={{ textAlign: "center" }}>{followers}</Text>
+          <Text style={styles.header}>Bio:</Text>
+          <Text style={{ textAlign: "center" }}>{bio}</Text>
+          <Text style={styles.header}>Company:</Text>
+          <Text style={{ textAlign: "center" }}>{company}</Text>
         </View>
       );
     }
@@ -48,22 +52,23 @@ export default class GithubUserProfile extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    justifyContent: "center"
-  },
   image: {
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
     borderWidth: 2,
-    borderColor: "#121212"
+    borderColor: "#121212",
+    left: Dimensions.get("window").width / 2 - 75
   },
-  userinput: {
-    height: 40,
-    borderColor: "lightgray",
-    borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: "white",
-    width: 250
+  name: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 10,
+    marginBottom: 10
+  },
+  header: {
+    fontSize: 15,
+    fontWeight: "bold",
+    textAlign: "center"
   }
 });

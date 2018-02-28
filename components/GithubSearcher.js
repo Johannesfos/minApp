@@ -7,9 +7,11 @@ import {
   TouchableHighlight,
   TextInput,
   ActivityIndicator,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from "react-native";
 import GithubUserProfile from "./Githubuserprofile";
+import GithubUserProfileHistory from "./Githubuserprofilehistory";
 
 export default class GithubSearcher extends React.Component {
   constructor(props) {
@@ -17,11 +19,12 @@ export default class GithubSearcher extends React.Component {
     this.state = {
       text: "Search Github-user...",
       isLoading: false,
-      gituser: []
+      gituser: [],
+      gituserhistory: []
     };
   }
 
-  async _OnSearchSubmit() {
+  async _OnSearchSubmitHandler() {
     try {
       this.setState({ isLoading: true });
       let response = await fetch(
@@ -29,8 +32,23 @@ export default class GithubSearcher extends React.Component {
       );
       let responseJson = await response.json();
       this.setState({ isLoading: false });
-      this.setState({ gituser: responseJson });
-      console.log(this.state.gituser);
+      this.setState({
+        gituser: responseJson,
+        text: "Search Github-user..."
+      });
+      let gitsearchhist = (
+        <GithubUserProfileHistory
+          {...this.state.gituser}
+          key={this.state.gituserhistory.lenght}
+        />
+      );
+      if (gitsearchhist.props.message) {
+        console.log("no found, did not add");
+      } else {
+        this.setState(prevState => ({
+          gituserhistory: [...prevState.gituserhistory, gitsearchhist]
+        }));
+      }
     } catch (error) {
       console.error(error);
     }
@@ -39,23 +57,47 @@ export default class GithubSearcher extends React.Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="#012267" />
+        <View style={styles.container}>
+          <TextInput
+            style={styles.userinput}
+            maxLength={30}
+            onChangeText={text => this.setState({ text })}
+            value={this.state.text}
+            autoCorrect={false}
+            keyboardType={"web-search"}
+          />
+          <GithubUserProfile {...this.state.gituser} key={"show"} />
+          <ScrollView horizontal={true} style={styles.historycontainer}>
+            {this.state.gituserhistory}
+          </ScrollView>
+          <ActivityIndicator
+            style={styles.loading}
+            size="large"
+            color="#012267"
+          />
         </View>
       );
     }
 
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.userinput}
-          maxLength={30}
-          onChangeText={text => this.setState({ text })}
-          value={this.state.text}
-          keyboardType={"web-search"}
-          onSubmitEditing={this._OnSearchSubmit.bind(this)}
-        />
-        <GithubUserProfile {...this.state.gituser} />
+        <View>
+          <TextInput
+            style={styles.userinput}
+            maxLength={30}
+            onChangeText={text => this.setState({ text })}
+            value={this.state.text}
+            keyboardType={"web-search"}
+            onSubmitEditing={this._OnSearchSubmitHandler.bind(this)}
+          />
+          <GithubUserProfile {...this.state.gituser} key={"show"} />
+        </View>
+        <Text style={{ textAlign: "center", fontSize: 14 }}>
+          - Search history -
+        </Text>
+        <ScrollView horizontal={true} style={styles.historycontainer}>
+          {this.state.gituserhistory}
+        </ScrollView>
       </View>
     );
   }
@@ -63,10 +105,16 @@ export default class GithubSearcher extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20,
-    flex: 1,
+    marginTop: 20,
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "space-between",
+    height: "100%"
+  },
+  historycontainer: {
+    height: 100,
+    width: "100%",
+    bottom: 0,
+    marginTop: 20
   },
   userinput: {
     height: 40,
@@ -75,7 +123,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "white",
     width: 250,
-    marginTop: 40,
     marginBottom: 30,
     left: Dimensions.get("window").width / 2 - 125,
     textAlign: "center"

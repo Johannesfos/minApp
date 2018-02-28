@@ -34,7 +34,7 @@ export default class GithubUserProfile extends React.Component {
       );
     } else {
       return (
-        <View>
+        <View style={styles.container}>
           <Image source={{ uri: avatar_url }} style={styles.image} />
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.header}>Location:</Text>
@@ -52,6 +52,10 @@ export default class GithubUserProfile extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    height: 460
+  },
+
   image: {
     width: 150,
     height: 150,

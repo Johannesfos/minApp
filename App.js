@@ -26,6 +26,7 @@ export default class App extends React.Component {
 
   render() {
     const content = (function(tab) {
+      console.log(tab);
       switch (tab) {
         case 0:
           return <Homepage />;

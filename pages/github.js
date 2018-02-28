@@ -4,14 +4,21 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TouchableHighlight
+  TouchableHighlight,
+  TextInput
 } from "react-native";
+import GithubSearcher from "../components/GithubSearcher";
 
 export default class Github extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { text: "Search Github-user..." };
+  }
+
   render() {
     return (
       <View>
-        <Text> Github</Text>
+        <GithubSearcher />
       </View>
     );
   }

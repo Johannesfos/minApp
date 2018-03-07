@@ -17,11 +17,25 @@ export default class GithubSearcher extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: "Search Github-user...",
+      text: "Search for Githubuser...",
       isLoading: false,
       gituser: [],
       gituserhistory: []
     };
+  }
+  _isDuplicate(user) {
+    var arr = this.state.gituserhistory.filter(
+      item => item.props.id === user.id
+    );
+    if (arr.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  _onPressHandler(id) {
+    var arr = this.state.gituserhistory.filter(item => item.props.id !== id);
+    this.setState({ gituserhistory: arr });
   }
 
   async _OnSearchSubmitHandler() {
@@ -31,26 +45,31 @@ export default class GithubSearcher extends React.Component {
         `https://api.github.com/users/${this.state.text}`
       );
       let responseJson = await response.json();
-      this.setState({ isLoading: false });
       this.setState({
         gituser: responseJson,
-        text: "Search Github-user..."
+        text: ""
       });
       let gitsearchhist = (
         <GithubUserProfileHistory
           {...this.state.gituser}
-          key={this.state.gituserhistory.lenght}
+          onDelete={this._onPressHandler.bind(this)}
+          Key={this.state.gituser.id}
         />
       );
       if (gitsearchhist.props.message) {
-        console.log("no found, did not add");
+        console.log("No username found, did not add");
       } else {
-        this.setState(prevState => ({
-          gituserhistory: [...prevState.gituserhistory, gitsearchhist]
-        }));
+        if (this._isDuplicate(this.state.gituser) === false) {
+          this.setState(prevState => ({
+            gituserhistory: [...prevState.gituserhistory, gitsearchhist]
+          }));
+        } else {
+          console.log("user already exsists in history");
+        }
       }
+      this.setState({ isLoading: false });
     } catch (error) {
-      console.error(error);
+      console.error("error on submitting Github");
     }
   }
 
@@ -62,14 +81,21 @@ export default class GithubSearcher extends React.Component {
             style={styles.userinput}
             maxLength={30}
             onChangeText={text => this.setState({ text })}
+            placeholder={"Search for username..."}
             value={this.state.text}
             autoCorrect={false}
             keyboardType={"web-search"}
           />
-          <GithubUserProfile {...this.state.gituser} key={"show"} />
-          <ScrollView horizontal={true} style={styles.historycontainer}>
-            {this.state.gituserhistory}
-          </ScrollView>
+          <View style={styles.historycontainer}>
+            <Text
+              style={{ textAlign: "center", fontSize: 14, marginBottom: 10 }}
+            >
+              - Search history -
+            </Text>
+            <ScrollView horizontal={true}>
+              {this.state.gituserhistory}
+            </ScrollView>
+          </View>
           <ActivityIndicator
             style={styles.loading}
             size="large"
@@ -92,12 +118,12 @@ export default class GithubSearcher extends React.Component {
           />
           <GithubUserProfile {...this.state.gituser} key={"show"} />
         </View>
-        <Text style={{ textAlign: "center", fontSize: 14 }}>
-          - Search history -
-        </Text>
-        <ScrollView horizontal={true} style={styles.historycontainer}>
-          {this.state.gituserhistory}
-        </ScrollView>
+        <View style={styles.historycontainer}>
+          <Text style={{ textAlign: "center", fontSize: 14, marginBottom: 10 }}>
+            - Search history -
+          </Text>
+          <ScrollView horizontal={true}>{this.state.gituserhistory}</ScrollView>
+        </View>
       </View>
     );
   }
@@ -111,10 +137,10 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   historycontainer: {
-    height: 100,
-    width: "100%",
-    bottom: 0,
-    marginTop: 20
+    position: "absolute",
+    top:
+      Dimensions.get("window").height - Dimensions.get("window").height * 0.39,
+    width: "100%"
   },
   userinput: {
     height: 40,
@@ -122,14 +148,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     backgroundColor: "white",
-    width: 250,
-    marginBottom: 30,
-    left: Dimensions.get("window").width / 2 - 125,
+    marginBottom: 15,
+    width: Dimensions.get("window").width * 0.7,
+    left:
+      Dimensions.get("window").width / 2 -
+      Dimensions.get("window").width * 0.7 / 2,
     textAlign: "center"
   },
   loading: {
     position: "absolute",
-    top: Dimensions.get("window").height / 2 - 50,
+    top: Dimensions.get("window").height / 2 - 100,
     left: Dimensions.get("window").width / 2 - 10
   }
 });

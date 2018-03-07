@@ -12,7 +12,6 @@ import GithubSearcher from "../components/GithubSearcher";
 export default class Github extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: "Search Github-user..." };
   }
 
   render() {

@@ -12,10 +12,16 @@ import {
 } from "react-native";
 
 export default class GithubUserProfileHistory extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
-
+  onPresshandler() {
+    try {
+      this.props.onDelete(this.props.id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   render() {
     const {
       message,
@@ -26,27 +32,32 @@ export default class GithubUserProfileHistory extends React.Component {
       location,
       name
     } = this.props;
-
+    console.log(this.props);
     return (
-      <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={this.onPresshandler.bind(this)}
+      >
         <Image source={{ uri: avatar_url }} style={styles.image} />
         <Text style={styles.name}>{name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 99,
-    width: 100,
-    flexDirection: "column"
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginRight: 4,
+    marginLeft: 4
   },
 
   image: {
-    width: 50,
-    height: 50,
-    left: 25
+    width: Dimensions.get("window").height * 0.1,
+    height: Dimensions.get("window").height * 0.1,
+    borderWidth: 0.1,
+    borderRadius: Dimensions.get("window").height * 0.1 / 2
   },
   name: {
     fontSize: 7,

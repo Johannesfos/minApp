@@ -28,23 +28,26 @@ export default class GithubUserProfile extends React.Component {
     } = this.props;
     if (message) {
       return (
-        <View>
-          <Text>{message}</Text>
+        <View style={styles.container}>
+          <Text style={{ textAlign: "center" }}>
+            No user found with that username, Try again!
+          </Text>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Image source={{ uri: avatar_url }} style={styles.image} />
           <Text style={styles.name}>{name}</Text>
+          <Image source={{ uri: avatar_url }} style={styles.image} />
+
           <Text style={styles.header}>Location:</Text>
-          <Text style={{ textAlign: "center" }}>{location}</Text>
+          <Text style={{ textAlign: "center", fontSize: 9 }}>{location}</Text>
           <Text style={styles.header}>Followers:</Text>
-          <Text style={{ textAlign: "center" }}>{followers}</Text>
+          <Text style={{ textAlign: "center", fontSize: 9 }}>{followers}</Text>
           <Text style={styles.header}>Bio:</Text>
-          <Text style={{ textAlign: "center" }}>{bio}</Text>
+          <Text style={{ textAlign: "center", fontSize: 9 }}>{bio}</Text>
           <Text style={styles.header}>Company:</Text>
-          <Text style={{ textAlign: "center" }}>{company}</Text>
+          <Text style={{ textAlign: "center", fontSize: 9 }}>{company}</Text>
         </View>
       );
     }
@@ -53,25 +56,37 @@ export default class GithubUserProfile extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: 460
+    height: Dimensions.get("window").height * 0.45,
+    width: Dimensions.get("window").width * 0.7,
+    left:
+      Dimensions.get("window").width / 2 -
+      Dimensions.get("window").width * 0.7 / 2,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "gray",
+    margin: 5,
+    marginBottom: 20,
+    paddingTop: 5,
+    backgroundColor: "white",
+    borderRadius: 20
   },
 
   image: {
-    width: 150,
-    height: 150,
+    height: Dimensions.get("window").width * 0.4,
+    width: Dimensions.get("window").width * 0.4,
+
     borderWidth: 2,
-    borderColor: "#121212",
-    left: Dimensions.get("window").width / 2 - 75
+    borderColor: "#121212"
   },
   name: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: 10,
     marginBottom: 10
   },
   header: {
-    fontSize: 15,
+    fontSize: 10,
     fontWeight: "bold",
     textAlign: "center"
   }

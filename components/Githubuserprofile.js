@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     left:
       Dimensions.get("window").width / 2 -
       Dimensions.get("window").width * 0.7 / 2,
-    borderWidth: 1,
+    borderWidth: 4,
     justifyContent: "center",
     alignItems: "center",
     borderColor: "gray",
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.4,
 
     borderWidth: 2,
-    borderColor: "#121212"
+    borderColor: "#121212",
+    borderRadius: 5
   },
   name: {
     fontSize: 15,

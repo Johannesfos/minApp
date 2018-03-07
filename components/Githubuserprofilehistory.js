@@ -32,7 +32,6 @@ export default class GithubUserProfileHistory extends React.Component {
       location,
       name
     } = this.props;
-    console.log(this.props);
     return (
       <TouchableOpacity
         style={styles.container}

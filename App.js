@@ -53,7 +53,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "powderblue"
+    backgroundColor: "white"
   },
   pagecontainer: {
     paddingTop: Constants.statusBarHeight,
